@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder.Type;
+// import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.RelativeEncoder;
 
 /**
@@ -22,6 +23,9 @@ import com.revrobotics.RelativeEncoder;
  * project.
  */
 public class Robot extends TimedRobot {
+  // Distance variables
+  int distPerRev;
+
   // NEO Ticks per Rev
   int neoTickPerRev = 42;
   
@@ -35,10 +39,10 @@ public class Robot extends TimedRobot {
   CANSparkMax rightMotorBack = new CANSparkMax(4, MotorType.kBrushless);
 
   // CANSparkMax Encoders
-  RelativeEncoder leftEncoderFront = leftMotorFront.getEncoder();
-  RelativeEncoder leftEncoderBack = leftMotorBack.getEncoder();
-  RelativeEncoder rightEncoderFront = rightMotorFront.getEncoder();
-  RelativeEncoder rightEncoderBack = rightMotorBack.getEncoder();
+  RelativeEncoder leftEncoderFront = leftMotorFront.getEncoder(Type.kQuadrature, 42);
+  RelativeEncoder leftEncoderBack = leftMotorBack.getEncoder(Type.kQuadrature, 42);
+  RelativeEncoder rightEncoderFront = rightMotorFront.getEncoder(Type.kQuadrature, 42);
+  RelativeEncoder rightEncoderBack = rightMotorBack.getEncoder(Type.kQuadrature, 42);
 
   // Controllers
   XboxController xboxCont = new XboxController(0);
@@ -69,7 +73,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-
+      
   }
 
 
