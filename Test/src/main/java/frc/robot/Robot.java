@@ -6,11 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.RelativeEncoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,14 +22,32 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
  * project.
  */
 public class Robot extends TimedRobot {
+  // NEO Ticks per Rev
+  int neoTickPerRev = 42;
+  
+  // Timer
   Timer timer = new Timer();
-  CANSparkMax leftMotorFront = new CANSparkMax(, MotorType.kBrushless); 
-  CANSparkMax leftMotorBack = new CANSparkMax(, MotorType.kBrushless);
-  CANSparkMax rightMotorFront = new CANSparkMax(, MotorType.kBrushless);
-  CANSparkMax rightMotorBack = new CANSparkMax(, MotorType.kBrushless);
+
+  // CANSparkMax Motor Controllers
+  CANSparkMax leftMotorFront = new CANSparkMax(1, MotorType.kBrushless); 
+  CANSparkMax leftMotorBack = new CANSparkMax(2, MotorType.kBrushless);
+  CANSparkMax rightMotorFront = new CANSparkMax(3, MotorType.kBrushless);
+  CANSparkMax rightMotorBack = new CANSparkMax(4, MotorType.kBrushless);
+
+  // CANSparkMax Encoders
+  RelativeEncoder leftEncoderFront = leftMotorFront.getEncoder();
+  RelativeEncoder leftEncoderBack = leftMotorBack.getEncoder();
+  RelativeEncoder rightEncoderFront = rightMotorFront.getEncoder();
+  RelativeEncoder rightEncoderBack = rightMotorBack.getEncoder();
+
+  // Controllers
   XboxController xboxCont = new XboxController(0);
+
+  // Motor groups
   MotorControllerGroup leftSide = new MotorControllerGroup(leftMotorFront, leftMotorBack);
   MotorControllerGroup rightSide = new MotorControllerGroup(rightMotorFront, rightMotorBack);
+
+  // Differential drive
   DifferentialDrive robotDrive = new DifferentialDrive(leftSide, rightSide); 
   
 
@@ -48,9 +69,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    if(timer.get() <= 2) {
-      robotDrive.arcadeDrive(.0, 0); // drive straight
-    }
+
   }
 
 
