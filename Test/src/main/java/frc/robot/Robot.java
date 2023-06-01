@@ -25,10 +25,8 @@ import com.revrobotics.RelativeEncoder;
  * project.
  */
 public class Robot extends TimedRobot {
-
-
   // NEO Ticks per Rev
-  int neoTickPerRev = 42;
+  int neoTicksPerRev = 42;
   
   // Timer
   Timer timer = new Timer();
@@ -62,6 +60,7 @@ public class Robot extends TimedRobot {
 
   double distancePerRev = wheelSizeMetres; // one rev equals this distance
   double revsForOneMetre = 1 / distancePerRev; // 1 metre divided by rev distance equals 1 metre per required amount of revs
+  double ticksForOneMetre = revsForOneMetre / neoTicksPerRev;
 
   @Override
   public void robotInit() {
@@ -75,13 +74,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    timer.start();
+
   }
 
 
   @Override
   public void autonomousPeriodic() {
-      
+      // drive one meter forward
+      if(leftEncoderFront.getCountsPerRevolution() < ticksForOneMetre){
+        robotDrive.arcadeDrive(0.5, 0.5);
+      }
   }
 
 
