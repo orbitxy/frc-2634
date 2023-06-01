@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
 
   double distancePerRev = wheelSizeMetres; // one rev equals this distance
   double revsForOneMetre = 1 / distancePerRev; // 1 metre divided by rev distance equals 1 metre per required amount of revs
-  double ticksForOneMetre = revsForOneMetre / neoTicksPerRev;
+  double ticksForOneMetre = revsForOneMetre / neoTicksPerRev; 
 
   @Override
   public void robotInit() {
@@ -80,8 +80,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-      // drive one meter forward
+      // drive one meter forward using amount of ticks passed
       if(leftEncoderFront.getCountsPerRevolution() < ticksForOneMetre){
+        robotDrive.arcadeDrive(0.5, 0.5);
+      }
+
+      // drive one meter forward using amount of rotations passed 
+      if(leftEncoderFront.getPosition() < revsForOneMetre){
         robotDrive.arcadeDrive(0.5, 0.5);
       }
   }
