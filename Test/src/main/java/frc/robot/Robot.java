@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.lang.Math;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -23,8 +25,7 @@ import com.revrobotics.RelativeEncoder;
  * project.
  */
 public class Robot extends TimedRobot {
-  // Distance variables
-  int distPerRev;
+
 
   // NEO Ticks per Rev
   int neoTickPerRev = 42;
@@ -54,6 +55,13 @@ public class Robot extends TimedRobot {
   // Differential drive
   DifferentialDrive robotDrive = new DifferentialDrive(leftSide, rightSide); 
   
+  // Circumference of Wheel
+  double wheelDiamInches = 8; 
+  double wheelSizeInches = wheelDiamInches * Math.PI; 
+  double wheelSizeMetres = wheelSizeInches / 39.37;
+
+  double distancePerRev = wheelSizeMetres; // one rev equals this distance
+  double revsForOneMetre = 1 / distancePerRev; // 1 metre divided by rev distance equals 1 metre per required amount of revs
 
   @Override
   public void robotInit() {
