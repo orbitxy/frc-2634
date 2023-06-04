@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+// import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -38,25 +38,26 @@ public class Robot extends TimedRobot {
 
   // CANSparkMax Motor Controllers
   CANSparkMax leftMotorFront = new CANSparkMax(10, MotorType.kBrushless); 
-  CANSparkMax leftMotorBack = new CANSparkMax(2, MotorType.kBrushless);
-  CANSparkMax rightMotorFront = new CANSparkMax(3, MotorType.kBrushless);
-  CANSparkMax rightMotorBack = new CANSparkMax(4, MotorType.kBrushless);
+  // CANSparkMax leftMotorBack = new CANSparkMax(2, MotorType.kBrushless);
+  CANSparkMax rightMotorFront = new CANSparkMax(18, MotorType.kBrushless);
+  // CANSparkMax rightMotorBack = new CANSparkMax(4, MotorType.kBrushless);
 
   // CANSparkMax Encoders
   RelativeEncoder leftEncoderFront = leftMotorFront.getAlternateEncoder(Type.kQuadrature, neoTicksPerRev);
-  RelativeEncoder leftEncoderBack = leftMotorBack.getAlternateEncoder(Type.kQuadrature, 42);
+  // RelativeEncoder leftEncoderBack = leftMotorBack.getAlternateEncoder(Type.kQuadrature, 42);
   RelativeEncoder rightEncoderFront = rightMotorFront.getAlternateEncoder(Type.kQuadrature, 42);
-  RelativeEncoder rightEncoderBack = rightMotorBack.getAlternateEncoder(Type.kQuadrature, 42);
+  // RelativeEncoder rightEncoderBack = rightMotorBack.getAlternateEncoder(Type.kQuadrature, 42);
 
   // Controllers
   XboxController xboxCont = new XboxController(0);
 
   // Motor groups
-  MotorControllerGroup leftSide = new MotorControllerGroup(leftMotorFront, leftMotorBack);
-  MotorControllerGroup rightSide = new MotorControllerGroup(rightMotorFront, rightMotorBack);
+  // MotorControllerGroup leftSide = new MotorControllerGroup(leftMotorFront, leftMotorBack);
+  // MotorControllerGroup rightSide = new MotorControllerGroup(rightMotorFront, rightMotorBack);
 
   // Differential drive
-  DifferentialDrive robotDrive = new DifferentialDrive(leftSide, rightSide); 
+  // DifferentialDrive robotDrive = new DifferentialDrive(leftSide, rightSide); 
+  DifferentialDrive robotDrive = new DifferentialDrive(leftMotorFront, rightMotorFront);
 
   // PIDControllers + values
   double kpDrive = 0;
@@ -65,14 +66,13 @@ public class Robot extends TimedRobot {
   PIDController pidController = new PIDController(kpDrive, kiDrive, kdDrive);
   
   // Circumference of Wheel
-  double wheelSizeMetres = 8 * Math.PI / 39.37; // 8 inches
+  double wheelDiamInches = 8; 
+  double wheelSizeInches = wheelDiamInches * Math.PI; 
+  double wheelSizeMetres = wheelSizeInches / 39.37;
 
   double distancePerRev = wheelSizeMetres; // one rev equals this distance
   double revsForOneMetre = 1 / distancePerRev; // 1 metre divided by rev distance equals 1 metre per required amount of revs
   double ticksForOneMetre = revsForOneMetre / neoTicksPerRev; 
-
-  // Circumference to rotate one 360
-  double one360 = 24 * Math.PI / 39.37; 
 
   // Setpoint for PID 
   double setpoint = 0; // in metres
